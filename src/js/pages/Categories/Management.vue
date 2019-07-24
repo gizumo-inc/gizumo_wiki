@@ -9,7 +9,6 @@
         :access="access"
         @udpateValue="updateValue"
         @clearMessage="clearMessage"
-        @handleSubmit="handleSubmit"
       />
     </section>
     <section class="category-management-list">
