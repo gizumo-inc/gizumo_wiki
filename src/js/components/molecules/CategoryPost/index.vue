@@ -13,9 +13,10 @@
     />
     <app-button
       class="category-management-post__submit"
-      button-type="submit"
+      button-type="button"
       round
       :disabled="disabled || !access.create"
+      @click="$emit('handleSubmit', $event)"
     >
       {{ buttonText }}
     </app-button>

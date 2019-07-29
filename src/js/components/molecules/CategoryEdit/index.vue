@@ -1,6 +1,7 @@
 <template lang="html">
   <form @submit.prevent="handleSubmit">
     <app-heading :level="1">カテゴリー管理</app-heading>
+
     <app-router-link
       class="category-management-edit__link"
       block

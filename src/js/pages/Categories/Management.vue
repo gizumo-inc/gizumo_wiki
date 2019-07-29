@@ -9,8 +9,10 @@
         :access="access"
         @udpateValue="updateValue"
         @clearMessage="clearMessage"
+        @handleSubmit="handleSubmit"
       />
     </section>
+
     <section class="category-management-list">
       <app-category-list
         :theads="theads"
@@ -76,7 +78,7 @@ export default {
     },
     handleSubmit() {
       if (this.loading) return;
-      this.$store.dispatch('categories/postCateogry', this.category)
+      this.$store.dispatch('categories/postCategory', this.category)
         .then(() => {
           this.category = '';
           this.$store.dispatch('categories/getAllCategories');

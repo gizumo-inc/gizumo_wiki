@@ -14,10 +14,28 @@ export default {
   },
   getters: {
     categoryList: state => state.categoryList,
+    categoryListLength: state => state.categoryList.length,
   },
   actions: {
     clearMessage({ commit }) {
       commit('clearMessage');
+    },
+    postCategory({ commit, rootGetters }, data) {
+      console.log(data);
+      return new Promise((resolve, reject) => {
+        axios(rootGetters['auth/token'])({
+          method: 'POST',
+          url: '/category',
+          data: { name: data },
+        }).then((response) => {
+          const payload = response.data.category;
+          commit('doneGetCategoryDetail', payload);
+          resolve();
+        }).catch((err) => {
+          commit('failFetchCategory', { message: err.message });
+          reject();
+        });
+      });
     },
     getAllCategories({ commit, rootGetters }) {
       axios(rootGetters['auth/token'])({
@@ -44,7 +62,6 @@ export default {
         }).then((response) => {
           // NOTE: エラー時はresponse.data.codeが0で返ってくる。
           if (response.data.code === 0) throw new Error(response.data.message);
-
           commit('doneDeleteCategory');
           resolve();
         }).catch((err) => {
