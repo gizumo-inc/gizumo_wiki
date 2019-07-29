@@ -11,8 +11,6 @@ export default {
     deleteCategoryName: '',
     updateCategoryId: null,
     updateCategoryName: '',
-    addCategoryId: null,
-    addCategoryName: '',
   },
   getters: {
     categoryList: state => state.categoryList,
@@ -28,18 +26,16 @@ export default {
         commit('clearMessage');
       }, 3000);
     },
-    postCategory({ commit, rootGetters }, data) {
+    postCategory({ commit, rootGetters }, inputCategoryName) {
       commit('toggleLoading');
-      // console.log(data);
       return new Promise((resolve, reject) => {
         axios(rootGetters['auth/token'])({
           method: 'POST',
           url: '/category',
-          data: { name: data },
-        }).then((response) => {
-          console.log(response);
+          data: { name: inputCategoryName },
+        }).then(() => {
           commit('toggleLoading');
-          commit('doneAddCategory', response);
+          commit('doneAddCategory');
           resolve();
         }).catch((err) => {
           commit('toggleLoading');
@@ -148,9 +144,7 @@ export default {
       state.updateCategoryId = payload.name;
       state.doneMessage = 'カテゴリーの更新が完了しました。';
     },
-    doneAddCategory(state, payload) {
-      state.addCategoryId = payload.id;
-      state.addCategoryId = payload.name;
+    doneAddCategory(state) {
       state.doneMessage = 'カテゴリーの追加が完了しました。';
     },
   },
