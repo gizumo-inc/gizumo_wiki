@@ -20,24 +20,21 @@
       placeholder="カテゴリー名を入力してください"
       data-vv-as="カテゴリー名"
       :error-messages="errors.collect('updateCategory')"
-      :value="updateCategoryName"
-      @updateValue="$emit('udpateValue', $event)"
     />
     <app-button
       class="category-management-edit__submit"
       button-type="submit"
       round
-      :disabled="disabled || !access.edit"
     >
       {{ buttonText }}
     </app-button>
 
-    <div v-if="errorMessage" class="category-management-edit__notice">
-      <app-text bg-error>{{ errorMessage }}</app-text>
+    <div class="category-management-edit__notice">
+      <app-text bg-error>ここにエラー時のメッセージが入ります</app-text>
     </div>
 
-    <div v-if="doneMessage" class="category-management-edit__notice">
-      <app-text bg-success>{{ doneMessage }}</app-text>
+    <div class="category-management-edit__notice">
+      <app-text bg-success>ここカテゴリー更新成功時のメッセージが入ります</app-text>
     </div>
   </form>
 </template>
@@ -59,10 +56,6 @@ export default {
       type: String,
       default: '',
     },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
     errorMessage: {
       type: String,
       default: '',
@@ -79,16 +72,7 @@ export default {
   computed: {
     buttonText() {
       if (!this.access.edit) return '変更権限がありません';
-      return this.disabled ? '更新中...' : '更新';
-    },
-  },
-  methods: {
-    handleSubmit() {
-      if (!this.access.edit) return;
-      this.$emit('clearMessage');
-      this.$validator.validate().then((valid) => {
-        if (valid) this.$emit('handleSubmit');
-      });
+      return '更新';
     },
   },
 };
