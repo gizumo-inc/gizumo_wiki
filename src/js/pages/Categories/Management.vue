@@ -77,12 +77,15 @@ export default {
       this.$store.dispatch('categories/clearMessage');
     },
     handleSubmit() {
+      this.$store.dispatch('categories/clearMessage');
       if (this.loading) return;
       this.$store.dispatch('categories/postCategory', this.category)
         .then(() => {
           this.category = '';
           this.$store.dispatch('categories/getAllCategories');
         });
+      // 追加しました
+      this.$store.dispatch('categories/setTimeClearMessage');
     },
     openModal(categoryId, categoryName) {
       this.toggleModal();

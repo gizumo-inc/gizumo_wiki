@@ -20,18 +20,26 @@ export default {
     clearMessage({ commit }) {
       commit('clearMessage');
     },
+    // 追加しました。
+    setTimeClearMessage({ commit }) {
+      setTimeout(() => {
+        commit('clearMessage');
+      }, 3000);
+    },
     postCategory({ commit, rootGetters }, data) {
-      console.log(data);
+      commit('toggleLoading');
+      // console.log(data);
       return new Promise((resolve, reject) => {
         axios(rootGetters['auth/token'])({
           method: 'POST',
           url: '/category',
           data: { name: data },
         }).then((response) => {
-          const payload = response.data.category;
-          commit('doneGetCategoryDetail', payload);
+          commit('toggleLoading');
+          commit('doneUpdateCategory', response);
           resolve();
         }).catch((err) => {
+          commit('toggleLoading');
           commit('failFetchCategory', { message: err.message });
           reject();
         });
