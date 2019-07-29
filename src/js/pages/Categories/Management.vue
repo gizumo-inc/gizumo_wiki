@@ -83,9 +83,9 @@ export default {
         .then(() => {
           this.category = '';
           this.$store.dispatch('categories/getAllCategories');
+          // 追加しました
+          this.$store.dispatch('categories/setTimeClearMessage');
         });
-      // 追加しました
-      this.$store.dispatch('categories/setTimeClearMessage');
     },
     openModal(categoryId, categoryName) {
       this.toggleModal();

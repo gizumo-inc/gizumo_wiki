@@ -11,6 +11,8 @@ export default {
     deleteCategoryName: '',
     updateCategoryId: null,
     updateCategoryName: '',
+    addCategoryId: null,
+    addCategoryName: '',
   },
   getters: {
     categoryList: state => state.categoryList,
@@ -35,8 +37,9 @@ export default {
           url: '/category',
           data: { name: data },
         }).then((response) => {
+          console.log(response);
           commit('toggleLoading');
-          commit('doneUpdateCategory', response);
+          commit('doneAddCategory', response);
           resolve();
         }).catch((err) => {
           commit('toggleLoading');
@@ -144,6 +147,11 @@ export default {
       state.updateCategoryId = payload.id;
       state.updateCategoryId = payload.name;
       state.doneMessage = 'カテゴリーの更新が完了しました。';
+    },
+    doneAddCategory(state, payload) {
+      state.addCategoryId = payload.id;
+      state.addCategoryId = payload.name;
+      state.doneMessage = 'カテゴリーの追加が完了しました。';
     },
   },
 };
