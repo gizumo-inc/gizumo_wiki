@@ -9,8 +9,10 @@
         :access="access"
         @udpateValue="updateValue"
         @clearMessage="clearMessage"
+        @handleSubmit="handleSubmit"
       />
     </section>
+
     <section class="category-management-list">
       <app-category-list
         :theads="theads"
@@ -75,11 +77,14 @@ export default {
       this.$store.dispatch('categories/clearMessage');
     },
     handleSubmit() {
+      this.$store.dispatch('categories/clearMessage');
       if (this.loading) return;
-      this.$store.dispatch('categories/postCateogry', this.category)
+      this.$store.dispatch('categories/postCategory', this.category)
         .then(() => {
           this.category = '';
           this.$store.dispatch('categories/getAllCategories');
+          // 追加しました
+          this.$store.dispatch('categories/setTimeClearMessage');
         });
     },
     openModal(categoryId, categoryName) {

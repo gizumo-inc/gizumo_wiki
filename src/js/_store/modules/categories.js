@@ -14,10 +14,35 @@ export default {
   },
   getters: {
     categoryList: state => state.categoryList,
+    categoryListLength: state => state.categoryList.length,
   },
   actions: {
     clearMessage({ commit }) {
       commit('clearMessage');
+    },
+    // 追加しました。
+    setTimeClearMessage({ commit }) {
+      setTimeout(() => {
+        commit('clearMessage');
+      }, 3000);
+    },
+    postCategory({ commit, rootGetters }, inputCategoryName) {
+      commit('toggleLoading');
+      return new Promise((resolve, reject) => {
+        axios(rootGetters['auth/token'])({
+          method: 'POST',
+          url: '/category',
+          data: { name: inputCategoryName },
+        }).then(() => {
+          commit('toggleLoading');
+          commit('doneAddCategory');
+          resolve();
+        }).catch((err) => {
+          commit('toggleLoading');
+          commit('failFetchCategory', { message: err.message });
+          reject();
+        });
+      });
     },
     getAllCategories({ commit, rootGetters }) {
       axios(rootGetters['auth/token'])({
@@ -44,7 +69,6 @@ export default {
         }).then((response) => {
           // NOTE: エラー時はresponse.data.codeが0で返ってくる。
           if (response.data.code === 0) throw new Error(response.data.message);
-
           commit('doneDeleteCategory');
           resolve();
         }).catch((err) => {
@@ -119,6 +143,9 @@ export default {
       state.updateCategoryId = payload.id;
       state.updateCategoryId = payload.name;
       state.doneMessage = 'カテゴリーの更新が完了しました。';
+    },
+    doneAddCategory(state) {
+      state.doneMessage = 'カテゴリーの追加が完了しました。';
     },
   },
 };
