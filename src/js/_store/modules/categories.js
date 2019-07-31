@@ -9,6 +9,8 @@ export default {
     categoryList: [],
     deleteCategoryId: null,
     deleteCategoryName: '',
+    updateCategoryId: null,
+    updateCategoryName: '',
   },
   getters: {
     categoryList: state => state.categoryList,
@@ -26,7 +28,7 @@ export default {
     },
     postCategory({ commit, rootGetters }, inputCategoryName) {
       commit('toggleLoading');
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         axios(rootGetters['auth/token'])({
           method: 'POST',
           url: '/category',
@@ -38,7 +40,6 @@ export default {
         }).catch((err) => {
           commit('toggleLoading');
           commit('failFetchCategory', { message: err.message });
-          reject();
         });
       });
     },
@@ -74,6 +75,46 @@ export default {
         });
       });
     },
+    getInfo({ commit, rootGetters }, categoryId) {
+      axios(rootGetters['auth/token'])({
+        method: 'GET',
+        url: `/category/${categoryId}`,
+      }).then((response) => {
+        const gettedInfo = response.data.category;
+        commit('gettingInfo', gettedInfo);
+      }).catch((err) => {
+        commit('toggleLoading');
+        commit('failFetchCategory', {
+          message: err.message,
+        });
+      });
+    },
+    editedCategoryName({ commit }, categoryName) {
+      commit('editedCategoryName', { categoryName });
+    },
+    putUpdateCategory({ commit, rootGetters }) {
+      commit('toggleLoading');
+      // こいつはオブジェクトを返す
+      // 新しいURL(クエリ文字列を作る)
+      const data = new URLSearchParams();
+      data.append('id', this.state.categories.updateCategoryId);
+      data.append('name', this.state.categories.updateCategoryName);
+      console.log(data);
+      axios(rootGetters['auth/token'])({
+        method: 'PUT',
+        url: `/category/${this.state.categories.updateCategoryId}`,
+        data,
+      }).then((response) => {
+        const payload = response.data.category;
+        commit('doneUpdateCategory', payload);
+        commit('toggleLoading');
+      }).catch((err) => {
+        commit('toggleLoading');
+        commit('failFetchCategory', {
+          message: err.message,
+        });
+      });
+    },
   },
   mutations: {
     clearMessage(state) {
@@ -92,6 +133,19 @@ export default {
     confirmDeleteCategory(state, { categoryId, categoryName }) {
       state.deleteCategoryId = categoryId;
       state.deleteCategoryName = categoryName;
+    },
+    gettingInfo(state, getCategory) {
+      // ここで更新を押したページのIDからidとnameを取得して、stateに代入。その結果pageでvalueとして表示される。
+      state.updateCategoryId = getCategory.id;
+      state.updateCategoryName = getCategory.name;
+    },
+    editedCategoryName(state, { categoryName }) {
+      state.updateCategoryName = categoryName;
+    },
+    doneUpdateCategory(state) {
+      state.updateCategoryId = null;
+      state.updateCategoryName = '';
+      state.doneMessage = 'カテゴリーの更新が完了しました。';
     },
     doneDeleteCategory(state) {
       state.deleteCategoryId = null;
