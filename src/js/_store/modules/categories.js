@@ -98,7 +98,6 @@ export default {
       const data = new URLSearchParams();
       data.append('id', this.state.categories.updateCategoryId);
       data.append('name', this.state.categories.updateCategoryName);
-      console.log(data);
       axios(rootGetters['auth/token'])({
         method: 'PUT',
         url: `/category/${this.state.categories.updateCategoryId}`,
