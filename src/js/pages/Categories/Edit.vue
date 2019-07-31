@@ -45,7 +45,6 @@ export default {
     const { id } = this.$route.params;
     this.$store.dispatch('categories/getInfo', id);
     this.$store.dispatch('categories/clearMessage');
-    this.$store.dispatch('categories/getAllCategories');
   },
   methods: {
     updateValue($event) {

@@ -83,7 +83,6 @@ export default {
         const gettedInfo = response.data.category;
         commit('gettingInfo', gettedInfo);
       }).catch((err) => {
-        commit('toggleLoading');
         commit('failFetchCategory', {
           message: err.message,
         });

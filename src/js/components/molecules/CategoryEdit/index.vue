@@ -1,7 +1,6 @@
 <template lang="html">
-  <form @submit.prevent="">
+  <form @submit.prevent="$emit('handleUpdate')">
     <app-heading :level="1">カテゴリー管理</app-heading>
-
     <app-router-link
       class="category-management-edit__link"
       block
@@ -28,7 +27,6 @@
       button-type="submit"
       round
       :disabled="disabled || !access.create"
-      @click="updateCategory"
     >
       {{ buttonText }}
     </app-button>
@@ -81,16 +79,6 @@ export default {
     buttonText() {
       if (!this.access.edit) return '変更権限がありません';
       return this.disabled ? '更新中...' : '更新';
-    },
-  },
-  methods: {
-    updateCategory() {
-      if (!this.access.create) return;
-      this.$emit('handleUpdate');
-      // this.$validator.validate()
-      //   .then((valid) => {
-      //     if (valid) this.$emit('handleUpdate');
-      //   });
     },
   },
 };
