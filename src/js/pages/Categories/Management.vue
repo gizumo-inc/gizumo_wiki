@@ -7,7 +7,7 @@
         :error-message="errorMessage"
         :done-message="doneMessage"
         :access="access"
-        @udpateValue="updateValue"
+        @updateValue="updateValue"
         @clearMessage="clearMessage"
         @handleSubmit="handleSubmit"
       />
