@@ -6,15 +6,10 @@ export default {
     loading: false,
     errorMessage: '',
     doneMessage: '',
-    categoryList: [],
     deleteCategoryId: null,
     deleteCategoryName: '',
     updateCategoryId: null,
     updateCategoryName: '',
-  },
-  getters: {
-    categoryList: state => state.categoryList,
-    categoryListLength: state => state.categoryList.length,
   },
   actions: {
     clearMessage({ commit }) {
