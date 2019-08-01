@@ -1,5 +1,5 @@
 <template lang="html">
-  <form @submit.prevent="$emit('handleUpdate')">
+  <form @submit.prevent="updateValue">
     <app-heading :level="1">カテゴリー管理</app-heading>
     <app-router-link
       class="category-management-edit__link"
@@ -18,7 +18,7 @@
       type="text"
       placeholder="カテゴリー名を入力してください"
       data-vv-as="カテゴリー名"
-      :error-messages="errors.collect('updateCategory')"
+      :error-messages="errors.collect('updateCategoryName')"
       :value="updateCategoryName"
       @updateValue="$emit('updateValue', $event)"
     />
@@ -74,11 +74,21 @@ export default {
       type: Boolean,
       default: false,
     },
+
   },
   computed: {
     buttonText() {
       if (!this.access.edit) return '変更権限がありません';
       return this.disabled ? '更新中...' : '更新';
+    },
+  },
+  methods: {
+    updateValue() {
+      if (!this.access.create) return;
+      this.$validator.validate()
+        .then((valid) => {
+          if (valid) this.$emit('handleUpdate');
+        });
     },
   },
 };
