@@ -3,6 +3,7 @@ import axios from '@Helpers/axiosDefault';
 export default {
   namespaced: true,
   state: {
+    categoryList: [],
     loading: false,
     errorMessage: '',
     doneMessage: '',
