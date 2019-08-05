@@ -83,7 +83,7 @@ export default {
     },
     doneFilteredArticles(state, payload) {
       const filteredArticles = payload.articles.filter(
-        article => article.category.name === payload.category,
+        article => article.category && article.category.name === payload.category,
       );
       state.articleList = [...filteredArticles];
     },
@@ -190,6 +190,7 @@ export default {
           commit('doneFilteredArticles', payload);
           resolve();
         }).catch((err) => {
+          console.log(err);
           commit('failRequest', { message: err.message });
           reject(new Error('エラーが発生しました'));
         });
