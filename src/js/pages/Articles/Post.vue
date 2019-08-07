@@ -83,6 +83,7 @@ export default {
   created() {
     this.$store.dispatch('categories/getAllCategories');
     this.$store.dispatch('articles/initPostArticle');
+    this.$store.dispatch('articles/loadArticle');
   },
 };
 </script>

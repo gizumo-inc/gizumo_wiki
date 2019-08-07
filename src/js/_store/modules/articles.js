@@ -81,6 +81,12 @@ export default {
         content: payload.content,
       });
     },
+    loadingArticle(state, payload) {
+      state.targetArticle = Object.assign({}, { ...state.targetArticle }, {
+        title: payload.title,
+        content: payload.content,
+      });
+    },
     doneFilteredArticles(state, payload) {
       const filteredArticles = payload.articles.filter(
         article => article.category && article.category.name === payload.category,
@@ -170,12 +176,28 @@ export default {
         type: 'editedTitle',
         title,
       });
+      localStorage.title = '';
+      localStorage.title += title;
     },
     editedContent({ commit }, content) {
       commit({
         type: 'editedContent',
         content,
       });
+      localStorage.content = '';
+      localStorage.content += content;
+    },
+    loadArticle({ commit }) {
+      if (!(localStorage.title === undefined)) {
+        const payload = {
+          title: localStorage.title,
+          content: localStorage.content,
+        };
+        commit('loadingArticle', payload);
+      } else {
+        // console.log(localStorage);
+        // console.log('localstorageに登録がない');
+      }
     },
     filteredArticles({ commit, rootGetters }, category) {
       return new Promise((resolve, reject) => {
