@@ -3,10 +3,7 @@ import axios from '@Helpers/axiosDefault';
 export default {
   namespaced: true,
   state: {
-    categoryList: [{
-      id: null,
-      name: '---',
-    }],
+    categoryList: [],
     loading: false,
     errorMessage: '',
     doneMessage: '',
@@ -124,7 +121,7 @@ export default {
       state.doneMessage = '';
     },
     doneGetAllCategories(state, { categories }) {
-      state.categoryList = [...state.categoryList, ...categories];
+      state.categoryList = [...categories];
     },
     failFetchCategory(state, { message }) {
       state.errorMessage = message;
