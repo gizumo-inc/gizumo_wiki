@@ -1,7 +1,6 @@
 <template>
   <app-article-post
     :category-list="categoryList"
-    :article-id="articleId"
     :article-title="articleTitle"
     :article-content="articleContent"
     :markdown-content="markdownContent"
@@ -41,11 +40,11 @@ export default {
     access() {
       return this.$store.getters['auth/access'];
     },
-    articleId() {
-      let { id } = this.$route.params;
-      id = parseInt(id, 10);
-      return id;
-    },
+    // articleId() {
+    //   let { id } = this.$route.params;
+    //   id = parseInt(id, 10);
+    //   return id;
+    // },
     articleTitle() {
       const { title } = this.$store.state.articles.targetArticle;
       return title;
@@ -64,6 +63,11 @@ export default {
       return this.$store.state.articles.doneMessage;
     },
   },
+  created() {
+    this.$store.dispatch('articles/initPostArticle');
+    this.$store.dispatch('categories/getAllCategories');
+    this.$store.dispatch('articles/loadArticle');
+  },
   methods: {
     selectedArticleCategory($event) {
       const categoryName = $event.target.value ? $event.target.value : '';
@@ -79,10 +83,6 @@ export default {
       if (this.loading) return;
       this.$store.dispatch('articles/postArticle');
     },
-  },
-  created() {
-    this.$store.dispatch('categories/getAllCategories');
-    this.$store.dispatch('articles/initPostArticle');
   },
 };
 </script>

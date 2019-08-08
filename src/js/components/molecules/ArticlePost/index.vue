@@ -21,7 +21,7 @@
         :value="currentCategoryName"
         @updateValue="$emit('selectedArticleCategory', $event)"
       >
-        <option value=""> --- </option>
+        <!-- <option value=""> --- </option> -->
         <option
           v-for="category in categoryList"
           :key="category.id"
@@ -95,10 +95,6 @@ export default {
     currentCategoryName: {
       type: String,
       default: '',
-    },
-    articleId: {
-      type: Number,
-      default: 0,
     },
     articleTitle: {
       type: String,

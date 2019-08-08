@@ -81,6 +81,17 @@ export default {
         content: payload.content,
       });
     },
+    loadingArticle(state, payload) {
+      state.targetArticle = Object.assign({}, { ...state.targetArticle }, {
+        title: payload.title,
+        content: payload.content,
+        category: {
+          id: payload.category.id,
+          name: payload.category.name,
+        },
+      });
+      console.log(state.targetArticle);
+    },
     doneFilteredArticles(state, payload) {
       const filteredArticles = payload.articles.filter(
         article => article.category && article.category.name === payload.category,
@@ -165,17 +176,25 @@ export default {
         });
       });
     },
-    editedTitle({ commit }, title) {
+    editedTitle({ commit, rootGetters }, title) {
       commit({
         type: 'editedTitle',
         title,
       });
+      const saveTitle = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveTitle);
     },
-    editedContent({ commit }, content) {
+    editedContent({ commit, rootGetters }, content) {
       commit({
         type: 'editedContent',
         content,
       });
+      const saveContent = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveContent);
+    },
+    loadArticle({ commit }) {
+      const payload = JSON.parse(localStorage.getItem('targetArticles'));
+      commit('loadingArticle', payload);
     },
     filteredArticles({ commit, rootGetters }, category) {
       return new Promise((resolve, reject) => {
@@ -210,6 +229,8 @@ export default {
         category: matches,
       };
       commit('selectedArticleCategory', payload);
+      const saveCategory = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveCategory);
     },
     updateArticle({ commit, rootGetters }) {
       commit('toggleLoading');
@@ -278,6 +299,8 @@ export default {
         }).then(() => {
           commit('toggleLoading');
           commit('displayDoneMessage', { message: 'ドキュメントを作成しました' });
+          commit('initPostArticle');
+          localStorage.removeItem('targetArticles');
           resolve();
         }).catch((err) => {
           commit('toggleLoading');

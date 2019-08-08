@@ -3,7 +3,10 @@ import axios from '@Helpers/axiosDefault';
 export default {
   namespaced: true,
   state: {
-    categoryList: [],
+    categoryList: [{
+      id: null,
+      name: '---',
+    }],
     loading: false,
     errorMessage: '',
     doneMessage: '',
@@ -49,7 +52,7 @@ export default {
         method: 'GET',
         url: '/category',
       }).then((response) => {
-        const payload = { categories: [] };
+        const payload = { categories: [], rootGetters };
         response.data.categories.forEach((val) => {
           payload.categories.push(val);
         });
@@ -121,7 +124,7 @@ export default {
       state.doneMessage = '';
     },
     doneGetAllCategories(state, { categories }) {
-      state.categoryList = [...categories];
+      state.categoryList = [...state.categoryList, ...categories];
     },
     failFetchCategory(state, { message }) {
       state.errorMessage = message;
