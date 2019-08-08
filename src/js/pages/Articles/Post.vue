@@ -64,6 +64,11 @@ export default {
       return this.$store.state.articles.doneMessage;
     },
   },
+  created() {
+    this.$store.dispatch('categories/getAllCategories');
+    this.$store.dispatch('articles/initPostArticle');
+    this.$store.dispatch('articles/loadArticle');
+  },
   methods: {
     selectedArticleCategory($event) {
       const categoryName = $event.target.value ? $event.target.value : '';
@@ -79,11 +84,6 @@ export default {
       if (this.loading) return;
       this.$store.dispatch('articles/postArticle');
     },
-  },
-  created() {
-    this.$store.dispatch('categories/getAllCategories');
-    this.$store.dispatch('articles/initPostArticle');
-    this.$store.dispatch('articles/loadArticle');
   },
 };
 </script>

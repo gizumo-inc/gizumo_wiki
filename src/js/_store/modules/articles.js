@@ -85,6 +85,10 @@ export default {
       state.targetArticle = Object.assign({}, { ...state.targetArticle }, {
         title: payload.title,
         content: payload.content,
+        category: {
+          id: payload.category.id,
+          name: payload.category.name,
+        },
       });
     },
     doneFilteredArticles(state, payload) {
@@ -171,33 +175,25 @@ export default {
         });
       });
     },
-    editedTitle({ commit }, title) {
+    editedTitle({ commit, rootGetters }, title) {
       commit({
         type: 'editedTitle',
         title,
       });
-      localStorage.title = '';
-      localStorage.title += title;
+      const saveTitle = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveTitle);
     },
-    editedContent({ commit }, content) {
+    editedContent({ commit, rootGetters }, content) {
       commit({
         type: 'editedContent',
         content,
       });
-      localStorage.content = '';
-      localStorage.content += content;
+      const saveContent = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveContent);
     },
     loadArticle({ commit }) {
-      if (!(localStorage.title === undefined)) {
-        const payload = {
-          title: localStorage.title,
-          content: localStorage.content,
-        };
-        commit('loadingArticle', payload);
-      } else {
-        // console.log(localStorage);
-        // console.log('localstorageに登録がない');
-      }
+      const payload = JSON.parse(localStorage.getItem('targetArticles'));
+      commit('loadingArticle', payload);
     },
     filteredArticles({ commit, rootGetters }, category) {
       return new Promise((resolve, reject) => {
@@ -232,6 +228,8 @@ export default {
         category: matches,
       };
       commit('selectedArticleCategory', payload);
+      const saveCategory = JSON.stringify(rootGetters['articles/targetArticle']);
+      localStorage.setItem('targetArticles', saveCategory);
     },
     updateArticle({ commit, rootGetters }) {
       commit('toggleLoading');
@@ -300,6 +298,9 @@ export default {
         }).then(() => {
           commit('toggleLoading');
           commit('displayDoneMessage', { message: 'ドキュメントを作成しました' });
+          commit('initPostArticle');
+          const resetArticles = JSON.stringify(rootGetters['articles/targetArticle']);
+          localStorage.setItem('targetArticles', resetArticles);
           resolve();
         }).catch((err) => {
           commit('toggleLoading');
