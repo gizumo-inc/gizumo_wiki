@@ -90,6 +90,7 @@ export default {
           name: payload.category.name,
         },
       });
+      console.log(state.targetArticle);
     },
     doneFilteredArticles(state, payload) {
       const filteredArticles = payload.articles.filter(
@@ -299,8 +300,7 @@ export default {
           commit('toggleLoading');
           commit('displayDoneMessage', { message: 'ドキュメントを作成しました' });
           commit('initPostArticle');
-          const resetArticles = JSON.stringify(rootGetters['articles/targetArticle']);
-          localStorage.setItem('targetArticles', resetArticles);
+          localStorage.removeItem('targetArticles');
           resolve();
         }).catch((err) => {
           commit('toggleLoading');

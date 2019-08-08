@@ -96,10 +96,6 @@ export default {
       type: String,
       default: '',
     },
-    articleId: {
-      type: Number,
-      default: 0,
-    },
     articleTitle: {
       type: String,
       default: '',
