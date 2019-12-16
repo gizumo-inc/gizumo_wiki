@@ -1,6 +1,7 @@
 import SigninForm from './SigninForm';
 import PasswordForm from './PasswordForm';
 import Profile from './Profile';
+import Pagination from './Pagination';
 import SidebarList from './SidebarList';
 import HomeCategory from './HomeCategory';
 import HomeArticle from './HomeArticle';
@@ -16,6 +17,7 @@ import ArticleEdit from './ArticleEdit';
 import ArticlePost from './ArticlePost';
 import ArticleDetail from './ArticleDetail';
 import ArticleTrashed from './ArticleTrashed';
+import ArticleListAuthor from './ArticleListAuthor';
 import DeleteModal from './Modal';
 import Notice from './Notice';
 
@@ -23,6 +25,7 @@ export {
   SigninForm,
   PasswordForm,
   Profile,
+  Pagination,
   SidebarList,
   HomeCategory,
   HomeArticle,
@@ -40,4 +43,5 @@ export {
   DeleteModal,
   Notice,
   ArticleTrashed,
+  ArticleListAuthor,
 };

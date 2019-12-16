@@ -29,6 +29,7 @@ export default {
     doneMessage: '',
     errorMessage: '',
     trashedArticleList: [],
+    authorList: [],
   },
   getters: {
     transformedArticles(state) {
@@ -120,6 +121,9 @@ export default {
     getTrashedArticle(state, payload) {
       state.trashedArticleList = [...payload.trashedArticles];
     },
+    getArticleAuthorList(state, payload) {
+      state.authorList = [...payload.authorList];
+    },
   },
   actions: {
     initPostArticle({ commit }) {
@@ -185,7 +189,7 @@ export default {
     selectedArticleCategory({ commit, rootGetters }, categoryName) {
       const categoryList = rootGetters['categories/categoryList'];
       const matches = categoryList.find(category => category.name === categoryName);
-      // カテゴリーが空のときのidとnameは下記をセット
+      //  カテゴリーが空のときのidとnameは下記をセット
       // if (!matches) {
       //   matches = {
       //     id: null,
@@ -292,6 +296,60 @@ export default {
           trashedArticles: res.data.articles,
         };
         commit('getTrashedArticle', payload);
+      });
+    },
+    getArticleAuthorList({ commit, rootGetters }, categoryName) {
+      return new Promise((resolve, reject) => {
+        axios(rootGetters['auth/token'])({
+          method: 'GET',
+          url: categoryName ? `/article?category=${categoryName}` : '/article',
+        }).then((res) => {
+          // payload
+          const payload = { authorList: [] };
+          // 記事一覧
+          const dataList = res.data.articles;
+          // 記事でユーザー情報が空の場合は'unknown'を代入させる
+          dataList.forEach((val, index) => {
+            if (!val.user) {
+              dataList[index].user = { account_name: 'unknown' };
+            }
+          });
+          // 記事からユーザー名を抜粋
+          const userList = dataList.map(val => val.user.account_name);
+          // ユーザー名の重複を取り除く
+          const user = userList.filter((val, i, arr) => arr.indexOf(val) === i);
+          // 表示するリストの作成
+          user.map((val) => {
+            const userName = val;
+            const authorContent = {
+              account_name: userName,
+              title: [],
+              content: [],
+              article: [],
+              id: '',
+            };
+            // 記事一覧からユーザー情報を参照してユーザー事に記事情報を振り分ける
+            dataList.map((value) => {
+              if (userName === value.user.account_name) {
+                authorContent.title.push(value.title);
+                authorContent.content.push(value.content);
+                authorContent.article.push({
+                  title: value.title,
+                  content: value.content,
+                });
+                authorContent.id = value.user.id;
+              }
+              return value;
+            });
+            payload.authorList.push(authorContent);
+            return val;
+          });
+          commit('getArticleAuthorList', payload);
+          resolve();
+        }).catch((err) => {
+          commit('failRequest', { message: err.message });
+          reject();
+        });
       });
     },
   },
