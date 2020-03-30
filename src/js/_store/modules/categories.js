@@ -19,6 +19,21 @@ export default {
     clearMessage({ commit }) {
       commit('clearMessage');
     },
+    postCateogry({ commit, rootGetters }, categoryName) {
+      const data = new URLSearchParams();
+      data.append('name', categoryName);
+      return new Promise((resolve) => {
+        axios(rootGetters['auth/token'])({
+          method: 'POST',
+          url: '/category',
+          data,
+        }).then(() => {
+          resolve();
+        }).catch((err) => {
+          commit('failFetchCategory', { message: err.message });
+        });
+      });
+    },
     getAllCategories({ commit, rootGetters }) {
       axios(rootGetters['auth/token'])({
         method: 'GET',
