@@ -30,6 +30,8 @@ export default {
           data,
         }).then(() => {
           commit('toggleLoading');
+          commit('donePostCategory');
+          console.log(resolve);
           resolve();
         }).catch((err) => {
           commit('failFetchCategory', { message: err.message });
@@ -125,6 +127,9 @@ export default {
       state.deleteCategoryId = null;
       state.deleteCategoryName = '';
       state.doneMessage = 'カテゴリーの削除が完了しました。';
+    },
+    donePostCategory(state) {
+      state.doneMessage = 'カテゴリーの更新が完了しました。';
     },
     doneGetCategoryDetail(state, payload) {
       state.updateCategoryId = payload.id;
