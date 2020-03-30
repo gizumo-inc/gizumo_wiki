@@ -31,7 +31,6 @@ export default {
         }).then(() => {
           commit('toggleLoading');
           commit('donePostCategory');
-          console.log(resolve);
           resolve();
         }).catch((err) => {
           commit('failFetchCategory', { message: err.message });

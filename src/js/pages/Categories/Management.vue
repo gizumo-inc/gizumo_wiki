@@ -72,6 +72,12 @@ export default {
     updateValue($event) {
       this[$event.target.name] = $event.target.value;
     },
+    handleSubmit() {
+      if (this.loading) return;
+      this.$store.dispatch('categories/postCateogry', this.category).then(() => {
+        this.$store.dispatch('categories/getAllCategories');
+      });
+    },
     clearMessage() {
       this.$store.dispatch('categories/clearMessage');
     },
@@ -82,17 +88,10 @@ export default {
         { categoryId, categoryName });
     },
     deleteCategory() {
-      this.$store.dispatch('categories/deleteCategory', this.deleteCategoryId)
-        .then(() => {
-          this.$store.dispatch('categories/getAllCategories');
-        });
-      this.toggleModal();
-    },
-    handleSubmit() {
-      if (this.loading) return;
-      this.$store.dispatch('categories/postCateogry', this.category).then(() => {
+      this.$store.dispatch('categories/deleteCategory', this.deleteCategoryId).then(() => {
         this.$store.dispatch('categories/getAllCategories');
       });
+      this.toggleModal();
     },
   },
 };
