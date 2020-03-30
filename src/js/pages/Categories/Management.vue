@@ -89,7 +89,10 @@ export default {
       this.toggleModal();
     },
     handleSubmit() {
-      this.$store.dispatch('categories/postCateogry', this.category);
+      if (this.loading) return;
+      this.$store.dispatch('categories/postCateogry', this.category).then(() => {
+        this.$store.dispatch('categories/getAllCategories');
+      });
     },
   },
 };

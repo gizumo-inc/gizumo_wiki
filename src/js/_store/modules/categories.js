@@ -20,6 +20,7 @@ export default {
       commit('clearMessage');
     },
     postCateogry({ commit, rootGetters }, categoryName) {
+      commit('toggleLoading');
       const data = new URLSearchParams();
       data.append('name', categoryName);
       return new Promise((resolve) => {
@@ -28,9 +29,11 @@ export default {
           url: '/category',
           data,
         }).then(() => {
+          commit('toggleLoading');
           resolve();
         }).catch((err) => {
           commit('failFetchCategory', { message: err.message });
+          commit('toggleLoading');
         });
       });
     },
