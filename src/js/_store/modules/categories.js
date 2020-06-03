@@ -19,6 +19,17 @@ export default {
     clearMessage({ commit }) {
       commit('clearMessage');
     },
+    getCategory({ commit, rootGetters }, categoryId) {
+      axios(rootGetters['auth/token'])({
+        method: 'GET',
+        url: `/category/${categoryId}`,
+      }).then((response) => {
+        const payload = response.data.category.name;
+        commit('doneUpdateCategory', payload);
+      }).catch((err) => {
+        commit('failFetchCategory', { message: err.message });
+      });
+    },
     getAllCategories({ commit, rootGetters }) {
       axios(rootGetters['auth/token'])({
         method: 'GET',
@@ -78,6 +89,9 @@ export default {
       state.deleteCategoryId = null;
       state.deleteCategoryName = '';
       state.doneMessage = 'カテゴリーの削除が完了しました。';
+    },
+    doneUpdateCategory(state, payload) {
+      state.updateCategoryName = payload;
     },
   },
 };

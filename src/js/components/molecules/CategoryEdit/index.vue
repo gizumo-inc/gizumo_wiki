@@ -17,6 +17,7 @@
       type="text"
       placeholder="カテゴリー名を入力してください"
       data-vv-as=""
+       :value="categoryName"
     />
     <app-button
       class="category-management-edit__submit"
@@ -53,6 +54,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    categoryName: {
+      type: String,
+      default: '',
     },
     access: {
       type: Object,
