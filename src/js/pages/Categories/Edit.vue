@@ -5,7 +5,11 @@
       :access="access"
       :category-id="categoryId"
       :category-name="categoryName"
+      :done-message="doneMessage"
+      :error-message="errorMessage"
       @clearMessage="clearMessage"
+      @updateCategory="updateCategory"
+      @editName="editName"
     />
   </div>
 </template>
@@ -33,6 +37,12 @@ export default {
       const name = this.$store.state.categories.updateCategoryName;
       return name;
     },
+    doneMessage() {
+      return this.$store.state.categories.doneMessage;
+    },
+    errorMessage() {
+      return this.$store.state.categories.errorMessage;
+    },
   },
   created() {
     this.$store.dispatch('categories/getCategory', parseInt(this.categoryId, 10));
@@ -40,6 +50,13 @@ export default {
   methods: {
     clearMessage() {
       this.$store.dispatch('categories/clearMessage');
+    },
+    updateCategory() {
+      if (this.loading) return;
+      this.$store.dispatch('categories/updateCategory');
+    },
+    editName($event) {
+      this.$store.dispatch('categories/editName', $event.target.value);
     },
   },
 };
