@@ -33,7 +33,7 @@
     "highlight.js": "^9.15.6",
     "http-errors": "^1.7.2",
     "js-cookie": "^2.2.0",
-    "marked": "^0.6.2",
+    "marked": "^0.7.0",
     "morgan": "^1.9.1",
     "pm2": "^3.5.0",
     "vee-validate": "^2.2.7",
