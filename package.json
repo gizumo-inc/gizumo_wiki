@@ -25,7 +25,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
     "@storybook/addon-storysource": "^5.0.10",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.0.1",
     "ejs": "^2.6.1",
