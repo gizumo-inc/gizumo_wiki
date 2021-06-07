@@ -10,6 +10,7 @@
 <script>
 import marked from 'marked';
 import hljs from 'highlight.js';
+import sanitizeHtml from 'sanitize-html';
 
 export default {
   props: {
@@ -64,7 +65,9 @@ export default {
         breaks: false,
         smartLists: true,
       });
-      return marked(this.markdownContent);
+      const target = marked(this.markdownContent);
+      return sanitizeHtml(target, { allowedTags: ['h1'] });
+      // ※allowedTagsで有効にしたいタグを指定可
     },
   },
   mounted() {

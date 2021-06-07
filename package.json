@@ -36,6 +36,7 @@
     "marked": "^0.7.0",
     "morgan": "^1.9.1",
     "pm2": "^3.5.0",
+    "sanitize-html": "^2.4.0",
     "vee-validate": "^2.2.7",
     "vue": "^2.6.6",
     "vue-router": "^3.0.3",
