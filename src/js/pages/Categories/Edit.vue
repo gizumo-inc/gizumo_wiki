@@ -55,7 +55,6 @@ export default {
       if (this.loading) return;
       this.$store.dispatch('categories/updateCategory');
     },
-
   },
 };
 </script>
